@@ -1,145 +1,81 @@
 'use strict';
 
 // Data needed for a later exercise
+
+
+  /*
+  Write a program that receives a list of variable names written in underscore_case and convert them to camelCase.
+
+  The input will come from a textarea inserted into the DOM (see code below), and conversion will happen when the button is pressed.
+  
+  THIS TEST DATA (pasted to textarea)
+  underscore_case
+   first_name
+  Some_Variable 
+    calculate_AGE
+  delayed_departure
+  
+  SHOULD PRODUCE THIS OUTPUT (5 separate console.log outputs)
+  underscoreCase      ✅
+  firstName           ✅✅
+  someVariable        ✅✅✅
+  calculateAge        ✅✅✅✅
+  delayedDeparture    ✅✅✅✅✅
+  
+  HINT 1: Remember which character defines a new line in the textarea 😉
+  HINT 2: The solution only needs to work for a variable made out of 2 words, like a_b
+  HINT 3: Start without worrying about the ✅. Tackle that only after you have the variable name conversion working 😉
+  HINT 4: This challenge is difficult on purpose, so start watching the solution in case you're stuck. Then pause and continue!
+  
+  Afterwards, test with your own test data!
+  
+  GOOD LUCK 😀
+  */
+
+/*
+document.body.append(document.createElement('textarea'));
+document.body.append(document.createElement('button'));
+
+//const str = document.querySelector('textarea').value;
+
+document.querySelector('button').addEventListener('click', function(){
+  const text = document.querySelector('textarea').value;
+  const rows = text.split('\n');
+  
+  //function
+  const convertCamel = function(str){
+    const strNormalise = str.toLowerCase().trim().split('_');
+    const capArr = [];
+    for (const word of strNormalise){
+      capArr.push(word[0].toUpperCase() + word.slice(1)) 
+    };
+    const camelFinal = capArr.join('');
+    return camelFinal;
+  };
+  
+  //calling function + printing
+  for (const [key, input] of rows.entries()){
+    console.log(`${convertCamel(input).padEnd(20, ' ')} ${'✅'.repeat(key + 1)}`);
+  };
+})
+//After splitting text, pass convertCamel function and print scores
+
+
+
+
+
+//Function that collects strings written with _ and convert to CamelCase */
+
+//String practice - webAPI
 const flights =
   '_Delayed_Departure;fao93766109;txl2133758440;11:25+_Arrival;bru0943384722;fao93766109;11:45+_Delayed_Arrival;hel7439299980;fao93766109;12:05+_Departure;fao93766109;lis2323639855;12:30';
 
-// Data needed for first part of the section
-const restaurant = {
-  name: 'Classico Italiano',
-  location: 'Via Angelo Tavanti 23, Firenze, Italy',
-  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
-  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad'],
-  mainMenu: ['Pizza', 'Pasta', 'Risotto'],
 
-  openingHours: {
-    thu: {
-      open: 12,
-      close: 22,
-    },
-    fri: {
-      open: 11,
-      close: 23,
-    },
-    sat: {
-      open: 0, // Open 24 hours
-      close: 24,
-    },
-  },
-};
-/*
-const objquiz = {
-  question: 'What is the best programming lang?',
-  1: 'python',
-  2: 'c',
-  3: 'javascript',
-  true: 'correct',
-  false: 'try again',
-  correct: 'javascript',
+for (const flight of flights.split('+')){
+  //splitting individual flight content
+  for (const details of flight.split(';')){
+    const [stat, origin, destination, time] = flight.split(';');
+      const output = (`${stat.startsWith('_Delayed')?'🔴':''} ${stat.replaceAll('_', ' ').trim()} from ${origin.toUpperCase().slice(0,3)} to ${destination.toUpperCase().slice(0,3)} (${time.replace(':', 'hr')})`).padStart(50, ' ')
+      console.log(output);
+  }
 }
-
-console.log(objquiz);
-//converting obj to map
-const objMap = new Map(Object.entries(objquiz));
-console.log(objMap);
-
-const mapQuiz = new Map([
-  ['question', 'What is the best programming lang?'],
-  [1, 'python'],
-  [2, 'c'],
-  [3, 'javascript'],
-  [true, 'correct'],
-  [false, 'try again'],
-  ['correct', 'javascript'],
-])
-
-//iterating map
-console.log(mapQuiz.get('question'));
-for (const [key, value] of mapQuiz) {
-  if (typeof key === 'number') console.log(`Answer ${key} = ${value}`);
-};
-const answer = Number(prompt(mapQuiz.get('question')));
-console.log(answer);
-
-alert(mapQuiz.get(mapQuiz.get(answer) === mapQuiz.get('correct')));*/
-
-//challenge 3
-const game = {
-  team1: 'Bayern Munich',
-  team2: 'Borrussia Dortmund',
-  players: [
-    [
-      'Neuer',
-      'Pavard',
-      'Martinez',
-      'Alaba',
-      'Davies',
-      'Kimmich',
-      'Goretzka',
-      'Coman',
-      'Muller',
-      'Gnarby',
-      'Lewandowski',
-    ],
-    [
-      'Burki',
-      'Schulz',
-      'Hummels',
-      'Akanji',
-      'Hakimi',
-      'Weigl',
-      'Witsel',
-      'Hazard',
-      'Brandt',
-      'Sancho',
-      'Gotze',
-    ],
-  ],
-  score: '4:0',
-  scored: ['Lewandowski', 'Gnarby', 'Lewandowski', 'Hummels'],
-  date: 'Nov 9th, 2037',
-  odds: {
-    team1: 1.33,
-    x: 3.25,
-    team2: 6.5,
-  },
-};
-
-const gameEvents = new Map([
-  [17, '⚽️ GOAL'],
-  [36, '🔁 Substitution'],
-  [47, '⚽️ GOAL'],
-  [61, '🔁 Substitution'],
-  [64, '🔶 Yellow card'],
-  [69, '🔴 Red card'],
-  [70, '🔁 Substitution'],
-  [72, '🔁 Substitution'],
-  [76, '⚽️ GOAL'],
-  [80, '⚽️ GOAL'],
-  [92, '🔶 Yellow card'],
-]);
-
-//Array of events that has happened, no duplicate
-const eventsArray = [...new Set(gameEvents.values())]
-
-console.log(eventsArray);
-
-//delete 64'' yellow card
-gameEvents.delete(64);
-console.log(gameEvents);
-
-//calculate and log "an event occured on average every 9 minutes"
-console.log(gameEvents.size);
-
-let averageEvent = 90/gameEvents.size
-console.log(`An event happened on average every ${averageEvent} minutes`);
-
-//Loop over gameevents, log each element into console. Mark 1st/2nd half -> [First Half] 17: Goal
-
-for (const [minute, event] of gameEvents.entries()){
-  if (minute <= 45) console.log(`[FIRST HALF] ${minute}: ${event}`); else {
-    console.log(`[SECOND HALF] ${minute}: ${event}`)
-  };
-}
-
-//updated
