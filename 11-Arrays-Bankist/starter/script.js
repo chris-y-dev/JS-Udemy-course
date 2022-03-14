@@ -61,6 +61,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+//Manipulating DOM elemnents
 const displayMovements = function(movements) {
   containerMovements.innerHTML = '';
   movements.forEach(function(mov, i){
@@ -76,18 +77,53 @@ const displayMovements = function(movements) {
 };
 
 displayMovements(account1.movements)
+///////////////////////////////////////////
+///////////////////////////////////////////
+///////////////////////////////////Lectures
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
-
+//Map method - converting currencies
 const currencies = new Map([
   ['USD', 'United States dollar'],
   ['EUR', 'Euro'],
   ['GBP', 'Pound sterling'],
 ]);
 
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const movements1 = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
+const eurtoUsd = 1.1;
+const movementsInUSD = movements1.map(function(mov) {
+  return mov*eurtoUsd}) //arrow callback function
+
+//console.log(movementsInUSD);
+
+//Map method - for each individual string
+/*const createUserName = function(account1){
+  const userName = user.toLowerCase().split(' ').map(function(name){
+    return name[0];
+  }).join('');
+  return userName;
+}*/
+
+//map + forEach -> copying the individual function to affect ALL objects
+const createUserName = function(acc){
+  acc.forEach(function(acc) {
+    acc.userName = acc.owner.toLowerCase().split(' ').map(function(name){
+      return name[0];
+    }).join('');
+  })
+}
+createUserName(accounts)
+
+//Filter method
+const getDeposit = movements1.filter(function(mov){
+  return mov > 0
+});
+
+console.log(getDeposit)
+
+const withdrawals = movements1.filter(function(mov){
+  return mov < 0;
+})
+console.log(withdrawals);
