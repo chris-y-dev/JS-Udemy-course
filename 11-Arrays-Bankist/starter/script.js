@@ -76,7 +76,7 @@ const displayMovements = function(movements) {
   });
 };
 
-displayMovements(account1.movements)
+
 
 /////Calculate + Print Balance on UI
 const calcDisplayBalance = function(movements) {
@@ -85,8 +85,6 @@ const calcDisplayBalance = function(movements) {
   }, 0);
   labelBalance.textContent = `${sum}EUR`
 }
-
-calcDisplayBalance(account1.movements)
 
 ///////////////////////////////////////////
 ///////////////////////////////////////////
@@ -111,23 +109,6 @@ calcDisplayBalance(account1.movements)
 
   //console.log(movementsInUSD);
 
-  //Map method - for each individual string
-  /*const createUserName = function(account1){
-    const userName = user.toLowerCase().split(' ').map(function(name){
-      return name[0];
-    }).join('');
-    return userName;
-  }
-
-  //map + forEach -> copying the individual function to affect ALL objects
-  const createUserName = function(acc){
-    acc.forEach(function(acc) {
-      acc.userName = acc.owner.toLowerCase().split(' ').map(function(name){
-        return name[0];
-      }).join('');
-    })
-  }
-  createUserName(accounts)
 
   //Filter method
   const getDeposit = movements1.filter(function(mov){
@@ -147,7 +128,6 @@ calcDisplayBalance(account1.movements)
   }, 0);
 
   console.log(balance);
-*/
 
 //chainging methods - take all deposits, convert to USD + add
 
@@ -160,26 +140,95 @@ const sumConvertUSD = function(movements){
 };
 
 console.log(sumConvertUSD(account1.movements));
+*/
 
 //changing display summary at bottom of app
-const calcDisplaySummary = function(movements){
-  const incomes = movements
+const calcDisplaySummary = function(acc){
+  const incomes = acc.movements
     .filter(mov=>mov>0)
     .reduce((acc,cur)=>acc+cur ,0);
-  labelSumIn.textContent=incomes;
-  const outflow = movements
+  labelSumIn.textContent=`${incomes}€`;
+
+  const outflow = acc.movements
   .filter(mov=>mov<0)
   .reduce((acc,cur)=>acc+cur ,0);
-  labelSumOut.textContent=outflow;
-  const interest = movements
+  labelSumOut.textContent=`${outflow}€`;
+
+  const interest = acc.movements
     .filter(mov=>mov>0)
-    .map(deposits=>deposits*0.012)
+    .map(deposits=>(deposits*acc.interestRate)/100)
     .filter(function(int,i,arr){
       console.log(arr);
       return int>=1;
     })
     .reduce((acc,int)=>acc+int, 0);
-  labelSumInterest.textContent=interest;
+  labelSumInterest.textContent=`${interest}€`;
   };
 
-calcDisplaySummary(account1.movements)
+
+///Find method
+  /*
+  console.log(accounts);
+  const account = accounts.find(function(acc){ ///pass array of account objects
+    return acc.owner==='Jessica Davis' ///search owner name
+  })
+  console.log(account);
+*/
+
+//Map method - for each individual string
+/*
+const createUserName = function(account1){
+  const userName = user.toLowerCase().split(' ').map(function(name){
+    return name[0];
+  }).join('');
+  return userName;
+}
+*/
+
+//map + forEach -> copying the individual function to affect ALL objects
+const createUsername = function(acc){
+  acc.forEach(function(acc) {
+    acc.username = acc.owner.toLowerCase().split(' ').map(function(name){
+      return name[0];
+    }).join('');
+  })
+}
+createUsername(accounts)
+
+///Login
+//username comes from, pin comes from 
+//btnLogin inputLoginUsername  inputLoginPin
+
+//event handlers0
+let currentAccount;
+
+btnLogin.addEventListener('click', function(e){
+  e.preventDefault();
+
+  currentAccount = accounts.find(function(acc){
+    return acc.username === inputLoginUsername.value;
+  });
+  console.log(currentAccount);
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    
+    //Display UI and welcome message
+    labelWelcome.textContent = `Welcome Back ${currentAccount.owner.split(' ')[0]}`;
+    containerApp.style.opacity=100;
+
+    //Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+
+    //Display movements
+    displayMovements(currentAccount.movements);
+
+    //Display balance
+    calcDisplayBalance(currentAccount.movements);
+
+    //Display Summmary
+    calcDisplaySummary(currentAccount);
+
+  } else console.log('WRONG PIN');
+})
+

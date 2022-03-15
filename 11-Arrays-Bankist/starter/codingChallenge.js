@@ -36,5 +36,11 @@ const calcAverageHumanAge = function(ages){
 const challenge2data1 = [5,2,4,1,15,8,3]
 const challenge2data2 = [16,6,10,5,6,1,4]
 
-console.log(calcAverageHumanAge(challenge2data1))
-console.log(calcAverageHumanAge(challenge2data2))
+//////coding challenge #3 -> rewriting 2 but in chain + arrows
+const calcAverageHumanAgeChain = function(ages){
+  const averageHumanAge = ages.map(dog => dog <= 2? 2*dog: 16+dog*4).filter(humanAge=>humanAge>=18).reduce((acc,cur,i,adultsArray)=>acc+cur/adultsArray.length,0); //DIVISION HAPPENS BEFORE ACCUMULATOR
+  return averageHumanAge
+}
+
+console.log(calcAverageHumanAgeChain(challenge2data1))
+console.log(calcAverageHumanAgeChain(challenge2data2))
