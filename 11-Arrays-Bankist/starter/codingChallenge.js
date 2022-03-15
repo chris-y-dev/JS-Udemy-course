@@ -16,3 +16,25 @@ const checkDogs = function(dogsJulia, dogsKate){
 
 //Data 1: Julia's data [3, 5, 2, 12, 7], Kate's data [4, 1, 15, 8, 3]
 //Data 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
+
+
+/////Coding challenge #2
+const calcAverageHumanAge = function(ages){
+  const humanAge = ages.map(function(dog){
+    if (dog<=2) return 2;
+    if (dog>2) return 16+dog*4;
+  });
+  const adults = humanAge.filter(function(humanAge){
+    return humanAge >= 18;
+  });
+  const averageHumanAge = adults.reduce(function(acc,curr){
+    return acc+curr
+  }, 0) / adults.length;
+  return averageHumanAge;
+}
+
+const challenge2data1 = [5,2,4,1,15,8,3]
+const challenge2data2 = [16,6,10,5,6,1,4]
+
+console.log(calcAverageHumanAge(challenge2data1))
+console.log(calcAverageHumanAge(challenge2data2))

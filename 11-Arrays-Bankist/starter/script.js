@@ -77,53 +77,109 @@ const displayMovements = function(movements) {
 };
 
 displayMovements(account1.movements)
+
+/////Calculate + Print Balance on UI
+const calcDisplayBalance = function(movements) {
+  const sum = movements.reduce(function(acc, cur){
+    return acc+cur
+  }, 0);
+  labelBalance.textContent = `${sum}EUR`
+}
+
+calcDisplayBalance(account1.movements)
+
 ///////////////////////////////////////////
 ///////////////////////////////////////////
 ///////////////////////////////////Lectures
 
-//Map method - converting currencies
-const currencies = new Map([
-  ['USD', 'United States dollar'],
-  ['EUR', 'Euro'],
-  ['GBP', 'Pound sterling'],
-]);
+//Array methods: Map, Filter, Reduce
+  /*
+  //Map method - converting currencies
+  const currencies = new Map([
+    ['USD', 'United States dollar'],
+    ['EUR', 'Euro'],
+    ['GBP', 'Pound sterling'],
+  ]);
 
-const movements1 = [200, 450, -400, 3000, -650, -130, 70, 1300];
+  const movements1 = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
-/////////////////////////////////////////////////
+  /////////////////////////////////////////////////
 
-const eurtoUsd = 1.1;
-const movementsInUSD = movements1.map(function(mov) {
-  return mov*eurtoUsd}) //arrow callback function
+  const eurtoUsd = 1.1;
+  const movementsInUSD = movements1.map(function(mov) {
+    return mov*eurtoUsd}) //arrow callback function
 
-//console.log(movementsInUSD);
+  //console.log(movementsInUSD);
 
-//Map method - for each individual string
-/*const createUserName = function(account1){
-  const userName = user.toLowerCase().split(' ').map(function(name){
-    return name[0];
-  }).join('');
-  return userName;
-}*/
-
-//map + forEach -> copying the individual function to affect ALL objects
-const createUserName = function(acc){
-  acc.forEach(function(acc) {
-    acc.userName = acc.owner.toLowerCase().split(' ').map(function(name){
+  //Map method - for each individual string
+  /*const createUserName = function(account1){
+    const userName = user.toLowerCase().split(' ').map(function(name){
       return name[0];
     }).join('');
+    return userName;
+  }
+
+  //map + forEach -> copying the individual function to affect ALL objects
+  const createUserName = function(acc){
+    acc.forEach(function(acc) {
+      acc.userName = acc.owner.toLowerCase().split(' ').map(function(name){
+        return name[0];
+      }).join('');
+    })
+  }
+  createUserName(accounts)
+
+  //Filter method
+  const getDeposit = movements1.filter(function(mov){
+    return mov > 0
+  });
+
+  console.log(getDeposit)
+
+  const withdrawals = movements1.filter(function(mov){
+    return mov < 0;
   })
-}
-createUserName(accounts)
+  console.log(withdrawals);
 
-//Filter method
-const getDeposit = movements1.filter(function(mov){
-  return mov > 0
-});
+  //Reduce method
+  const balance = movements1.reduce(function(acc, cur){
+    return acc + cur
+  }, 0);
 
-console.log(getDeposit)
+  console.log(balance);
+*/
 
-const withdrawals = movements1.filter(function(mov){
-  return mov < 0;
-})
-console.log(withdrawals);
+//chainging methods - take all deposits, convert to USD + add
+
+const sumConvertUSD = function(movements){
+  const balanceUSD = movements
+  .filter(mov => mov>0)
+  .map(mov=>mov*1.1)
+  .reduce((acc,cur)=>acc+cur, 0);
+  return balanceUSD;
+};
+
+console.log(sumConvertUSD(account1.movements));
+
+//changing display summary at bottom of app
+const calcDisplaySummary = function(movements){
+  const incomes = movements
+    .filter(mov=>mov>0)
+    .reduce((acc,cur)=>acc+cur ,0);
+  labelSumIn.textContent=incomes;
+  const outflow = movements
+  .filter(mov=>mov<0)
+  .reduce((acc,cur)=>acc+cur ,0);
+  labelSumOut.textContent=outflow;
+  const interest = movements
+    .filter(mov=>mov>0)
+    .map(deposits=>deposits*0.012)
+    .filter(function(int,i,arr){
+      console.log(arr);
+      return int>=1;
+    })
+    .reduce((acc,int)=>acc+int, 0);
+  labelSumInterest.textContent=interest;
+  };
+
+calcDisplaySummary(account1.movements)
